@@ -16,7 +16,7 @@ const UBER_RATES = {
   perMinute: 0.38,      // Per-minute charge (avg ~$0.40, Uber slightly lower)
   bookingFee: 2.55,     // Booking/platform fee (not subject to surge)
   serviceFee: 1.85,     // Separate service fee charged by platform
-  minimumFare: 8.00,    // Minimum fare (most markets $7-9)
+  minimumFare: 5.00,    // Minimum fare (most markets $7-9)
   longTripThresholdMiles: 30,
   longTripPerMileDiscount: 0.15, // Per-mile rate drops ~10-15% on 30+ mi trips
 };
@@ -27,7 +27,7 @@ const LYFT_RATES = {
   perMinute: 0.34,      // Per-minute charge (Lyft usually slightly lower/min)
   bookingFee: 2.75,     // Booking/platform fee
   serviceFee: 2.05,     // Service fee (Lyft typically charges a bit more here)
-  minimumFare: 7.50,    // Minimum fare
+  minimumFare: 5.00,    // Minimum fare
   longTripThresholdMiles: 30,
   longTripPerMileDiscount: 0.12,
 };

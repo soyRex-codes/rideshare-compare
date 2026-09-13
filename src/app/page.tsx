@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import LocationInput from "@/components/LocationInput";
+import ComparisonCard from "@/components/ComparisonCard";
 import SkeletonCard from "@/components/SkeletonCard";
-import ResultCard from "@/components/ResultCard";
 import RouteMap from "@/components/RouteMap";
 import { EstimateResponse } from "@/types";
 
@@ -295,10 +295,14 @@ export default function Home() {
               )}
             </div>
 
-            {/* Price cards */}
-            <div className="space-y-3 pt-2">
-              <ResultCard estimate={results.uber} pickupAddress={pickup.address} dropoffAddress={dropoff.address} />
-              <ResultCard estimate={results.lyft} pickupAddress={pickup.address} dropoffAddress={dropoff.address} />
+            {/* Price comparison */}
+            <div className="pt-2">
+              <ComparisonCard 
+                uber={results.uber} 
+                lyft={results.lyft} 
+                pickupAddress={pickup.address} 
+                dropoffAddress={dropoff.address} 
+              />
             </div>
 
             {/* Disclaimer */}
