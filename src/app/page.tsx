@@ -297,8 +297,8 @@ export default function Home() {
 
             {/* Price cards */}
             <div className="space-y-3 pt-2">
-              <ResultCard estimate={results.uber} />
-              <ResultCard estimate={results.lyft} />
+              <ResultCard estimate={results.uber} pickupAddress={pickup.address} dropoffAddress={dropoff.address} />
+              <ResultCard estimate={results.lyft} pickupAddress={pickup.address} dropoffAddress={dropoff.address} />
             </div>
 
             {/* Disclaimer */}

@@ -3,6 +3,8 @@ import Link from "next/link";
 
 interface ResultCardProps {
   estimate: PriceEstimate;
+  pickupAddress?: string;
+  dropoffAddress?: string;
 }
 
 const serviceConfig = {
@@ -26,7 +28,7 @@ const serviceConfig = {
 
 const DISCOUNT = 0.30; // 30% off
 
-export default function ResultCard({ estimate }: ResultCardProps) {
+export default function ResultCard({ estimate, pickupAddress, dropoffAddress }: ResultCardProps) {
   const config = serviceConfig[estimate.service];
 
   const formatPrice = (price: number) =>
@@ -41,6 +43,14 @@ export default function ResultCard({ estimate }: ResultCardProps) {
   // Discounted prices (30% off the midpoint)
   const midpoint = (estimate.low + estimate.high) / 2;
   const discountedPrice = midpoint * (1 - DISCOUNT);
+
+  let bookUrl = "/drivers";
+  if (pickupAddress || dropoffAddress) {
+    const params = new URLSearchParams();
+    if (pickupAddress) params.append("pickup", pickupAddress);
+    if (dropoffAddress) params.append("dropoff", dropoffAddress);
+    bookUrl = `/drivers?${params.toString()}`;
+  }
 
   return (
     <div className={`w-full rounded-xl ${config.bg} p-5 transition-transform active:scale-[0.99]`}>
@@ -98,7 +108,7 @@ export default function ResultCard({ estimate }: ResultCardProps) {
 
       {/* Book with us CTA */}
       <Link
-        href="/drivers"
+        href={bookUrl}
         className="block w-full py-2.5 rounded-lg bg-white/15 hover:bg-white/25 
                    text-center text-[13px] font-semibold text-white transition-colors
                    active:scale-[0.98]"

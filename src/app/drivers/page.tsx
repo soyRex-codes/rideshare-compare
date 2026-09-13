@@ -37,14 +37,19 @@ const DRIVERS = [
   },
 ];
 
-export default function DriversPage() {
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+
+function DriversContent() {
+  const searchParams = useSearchParams();
+  
   const [formSent, setFormSent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
-    pickup: "",
-    dropoff: "",
+    pickup: searchParams.get("pickup") || "",
+    dropoff: searchParams.get("dropoff") || "",
     datetime: "",
     notes: "",
   });
@@ -362,5 +367,17 @@ export default function DriversPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function DriversPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-neutral-50">
+        <div className="w-8 h-8 rounded-full border-2 border-neutral-200 border-t-neutral-900 animate-spin" />
+      </div>
+    }>
+      <DriversContent />
+    </Suspense>
   );
 }
