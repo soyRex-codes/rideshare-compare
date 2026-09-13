@@ -59,7 +59,7 @@ export default function LocationInput({
         const res = await fetch(
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
             searchText
-          )}.json?access_token=${mapboxToken}&autocomplete=true&country=us&bbox=${moBbox}&types=address,poi,place&limit=5`
+          )}.json?access_token=${mapboxToken}&autocomplete=true&country=us&bbox=${moBbox}&proximity=ip&types=address,poi,place&limit=5`
         );
         const data = await res.json();
         if (data.features?.length > 0) {
