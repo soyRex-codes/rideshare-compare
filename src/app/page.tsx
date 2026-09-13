@@ -198,6 +198,14 @@ export default function Home() {
               </div>
             )}
 
+            {/* Address tip banner */}
+            <div className="bg-blue-50/80 border border-blue-100 rounded-xl p-3 flex items-start gap-2.5 text-blue-700 text-[12px] leading-relaxed">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <p>
+                <strong>Tip:</strong> If you can't find your exact location, copy and paste the address directly from Google Maps or Apple Maps for best results.
+              </p>
+            </div>
+
             <button
               onClick={handleCompare}
               disabled={!canCompare}
