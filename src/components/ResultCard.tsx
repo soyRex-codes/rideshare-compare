@@ -88,7 +88,10 @@ export default function ResultCard({ estimate }: ResultCardProps) {
             30% OFF
           </span>
         </div>
-        <p className={`text-[11px] ${config.muted} mt-1 uppercase tracking-wider`}>
+        <p className="inline-flex items-center gap-1.5 mt-2 text-[11px] font-bold text-green-300 uppercase tracking-widest bg-green-400/20 px-2 py-1 rounded">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
           Book with our drivers & save
         </p>
       </div>
