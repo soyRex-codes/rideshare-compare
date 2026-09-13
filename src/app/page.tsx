@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import LocationInput from "@/components/LocationInput";
 import SkeletonCard from "@/components/SkeletonCard";
 import ResultCard from "@/components/ResultCard";
@@ -69,12 +70,12 @@ export default function Home() {
     setErrorMessage("");
   };
 
-  // Generic cool map background for the initial state (San Francisco coordinates)
+  // Generic cool map background for the initial state
   const defaultMapUrl = `https://api.mapbox.com/styles/v1/mapbox/light-v11/static/-122.4194,37.7749,12,0/800x600@2x?access_token=${mapboxToken}`;
 
   return (
     <main className="min-h-screen flex flex-col relative bg-neutral-50">
-      {/* Background Map for Input State to make it feel like a rideshare app */}
+      {/* Background Map for Input State */}
       {(appState === "input" || appState === "error") && (
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neutral-50/80 to-neutral-50 z-10" />
@@ -97,21 +98,25 @@ export default function Home() {
               </svg>
             </div>
             <div>
-              <h1 className="text-lg font-bold text-neutral-900 tracking-tight leading-tight">
-                RideCompare
+              <h1 className="text-xl font-bold text-neutral-900 tracking-tight leading-tight">
+                Rido
               </h1>
-              <p className="text-[10px] text-neutral-500 uppercase tracking-widest font-semibold">
-                Uber vs Lyft
-              </p>
             </div>
           </div>
-          {appState === "results" && (
+          {appState === "results" ? (
             <button
               onClick={handleReset}
               className="text-[13px] bg-neutral-100 px-3 py-1.5 rounded-full text-neutral-700 font-medium hover:bg-neutral-200 transition-colors"
             >
               New search
             </button>
+          ) : (
+            <Link
+              href="/drivers"
+              className="text-[13px] text-neutral-500 font-medium hover:text-neutral-900 transition-colors"
+            >
+              Meet our drivers
+            </Link>
           )}
         </div>
       </header>
@@ -122,12 +127,12 @@ export default function Home() {
           <div className="space-y-6 mt-auto mb-auto">
             
             {/* Hero Text */}
-            <div className="text-center space-y-2 mb-6">
-              <h2 className="text-2xl font-bold text-neutral-900 tracking-tight">
-                Stop overpaying for rides.
+            <div className="text-center space-y-2 mb-6 px-2">
+              <h2 className="text-2xl sm:text-[26px] font-bold text-neutral-900 tracking-tight leading-snug">
+                Rido is better and always more affordable.
               </h2>
               <p className="text-sm text-neutral-500">
-                Compare live prices and book direct to save 30%.
+                Compare live prices and save 30% against Uber & Lyft.
               </p>
             </div>
 
