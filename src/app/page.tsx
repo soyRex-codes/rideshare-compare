@@ -6,6 +6,7 @@ import LocationInput from "@/components/LocationInput";
 import ComparisonCard from "@/components/ComparisonCard";
 import SkeletonCard from "@/components/SkeletonCard";
 import RouteMap from "@/components/RouteMap";
+import LegalFooter from "@/components/LegalFooter";
 import { EstimateResponse } from "@/types";
 
 interface SelectedLocation {
@@ -320,6 +321,8 @@ export default function Home() {
           </div>
         )}
       </div>
+      
+      <LegalFooter />
     </main>
   );
 }
