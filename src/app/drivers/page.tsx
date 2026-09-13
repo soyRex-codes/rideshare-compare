@@ -38,6 +38,7 @@ const DRIVERS = [
 
 export default function DriversPage() {
   const [formSent, setFormSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -47,11 +48,39 @@ export default function DriversPage() {
     notes: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In production, this would send to an API endpoint or email service
-    console.log("Ride request:", formData);
-    setFormSent(true);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/copilotagent2025@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          _subject: "New Ride Request (Rido)",
+          Name: formData.name,
+          Phone: formData.phone,
+          Pickup: formData.pickup,
+          Dropoff: formData.dropoff,
+          Time: formData.datetime,
+          Notes: formData.notes || "None provided",
+        }),
+      });
+
+      if (response.ok) {
+        setFormSent(true);
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Failed to send request. Please check your internet connection.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -355,10 +384,15 @@ export default function DriversPage() {
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-neutral-900 text-white text-[14px] font-semibold
-                           hover:bg-neutral-800 active:scale-[0.98] transition-all"
+                disabled={isSubmitting}
+                className={`w-full py-3 rounded-xl text-white text-[14px] font-semibold transition-all
+                           ${
+                             isSubmitting
+                               ? "bg-neutral-400 cursor-not-allowed"
+                               : "bg-neutral-900 hover:bg-neutral-800 active:scale-[0.98]"
+                           }`}
               >
-                Request a ride
+                {isSubmitting ? "Sending request..." : "Request a ride"}
               </button>
 
               <p className="text-center text-[11px] text-neutral-300">
