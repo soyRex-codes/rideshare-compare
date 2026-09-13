@@ -116,7 +116,7 @@ export default function Home() {
               href="/drivers"
               className="text-[13px] text-neutral-500 font-medium hover:text-neutral-900 transition-colors"
             >
-              Meet our drivers
+              Meet Rido partners
             </Link>
           )}
         </div>

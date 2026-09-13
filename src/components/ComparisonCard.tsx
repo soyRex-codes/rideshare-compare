@@ -141,7 +141,7 @@ export default function ComparisonCard({ uber, lyft, pickupAddress, dropoffAddre
             className="w-full bg-green-600 hover:bg-green-700 active:scale-[0.98] transition-all
                        text-white text-[14px] font-bold py-3 rounded-lg shadow-lg shadow-green-600/20"
           >
-            Book with our drivers →
+            Book with Rido partners →
           </Link>
           <p className="text-[11px] text-green-700/60 font-medium mt-2">
             Save 30% off the cheapest alternative.
