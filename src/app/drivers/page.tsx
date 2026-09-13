@@ -8,9 +8,9 @@ import Link from "next/link";
 const DRIVERS = [
   {
     id: "driver-1",
-    name: "Alex Rivera",
+    name: "G",
     photo: null, // Set to a URL string if you have a photo
-    rating: 4.9,
+    rating: 5.0,
     rides: 1200,
     vehicle: "2023 Toyota Camry · Black",
     bio: "Full-time driver, 3+ years of experience. Clean car, safe rides, always on time.",
