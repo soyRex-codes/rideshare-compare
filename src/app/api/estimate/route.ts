@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { EstimateRequest, EstimateResponse } from '@/types';
 import { calculateUberEstimate, calculateLyftEstimate, getSurgeMultiplier, getWeatherMultiplier, getWeatherDescription } from '@/lib/pricing';
 import { getCachedWeather, setCachedWeather } from '@/lib/weather-cache';
+import { getCachedRoute, setCachedRoute } from '@/lib/directions-cache';
 
 export async function POST(request: Request) {
   try {
@@ -22,21 +23,35 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Mapbox token not configured' }, { status: 500 });
     }
 
-    const mapboxUrl = `https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${pickup.longitude},${pickup.latitude};${dropoff.longitude},${dropoff.latitude}?access_token=${mapboxToken}`;
-    const directionsRes = await fetch(mapboxUrl);
-    
-    if (!directionsRes.ok) {
-      return NextResponse.json({ error: 'Failed to fetch directions from Mapbox' }, { status: 500 });
+    let distanceMeters = 0;
+    let durationSeconds = 0;
+
+    const cachedRoute = getCachedRoute(pickup.latitude, pickup.longitude, dropoff.latitude, dropoff.longitude);
+    if (cachedRoute) {
+      distanceMeters = cachedRoute.distance;
+      durationSeconds = cachedRoute.duration;
+    } else {
+      const mapboxUrl = `https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${pickup.longitude},${pickup.latitude};${dropoff.longitude},${dropoff.latitude}?access_token=${mapboxToken}`;
+      const directionsRes = await fetch(mapboxUrl);
+      
+      if (!directionsRes.ok) {
+        return NextResponse.json({ error: 'Failed to fetch directions from Mapbox' }, { status: 500 });
+      }
+
+      const directionsData = await directionsRes.json();
+      if (!directionsData.routes || directionsData.routes.length === 0) {
+        return NextResponse.json({ error: 'No route found' }, { status: 400 });
+      }
+
+      const route = directionsData.routes[0];
+      distanceMeters = route.distance;
+      durationSeconds = route.duration;
+      
+      setCachedRoute(pickup.latitude, pickup.longitude, dropoff.latitude, dropoff.longitude, distanceMeters, durationSeconds);
     }
 
-    const directionsData = await directionsRes.json();
-    if (!directionsData.routes || directionsData.routes.length === 0) {
-      return NextResponse.json({ error: 'No route found' }, { status: 400 });
-    }
-
-    const route = directionsData.routes[0];
-    const distanceMiles = route.distance * 0.000621371; // convert meters to miles
-    const durationMinutes = route.duration / 60; // convert seconds to minutes
+    const distanceMiles = distanceMeters * 0.000621371; // convert meters to miles
+    const durationMinutes = durationSeconds / 60; // convert seconds to minutes
 
     let weatherCode = 800; // default clear
     let weatherCondition = 'Clear';

@@ -82,7 +82,7 @@ export default function LocationInput({
     setQuery(value);
     setSelectedAddress("");
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => fetchSuggestions(value), 300);
+    debounceRef.current = setTimeout(() => fetchSuggestions(value), 500);
   };
 
   const handleSelect = (feature: MapboxFeature) => {
