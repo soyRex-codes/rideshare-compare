@@ -36,8 +36,7 @@ const DRIVERS = [
     availability: "Fri–Sun, 8 AM – 12 AM",
   },
 ];
-
-import { Suspense, useState, useRef } from "react";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import LegalFooter from "@/components/LegalFooter";
 
