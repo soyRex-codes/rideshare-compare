@@ -1,30 +1,39 @@
-import { PriceEstimate, TripDetails } from "@/types";
+import { PriceEstimate } from "@/types";
 
 interface ResultCardProps {
   estimate: PriceEstimate;
-  trip: TripDetails;
 }
 
 const serviceConfig = {
   uber: {
     name: "Uber",
-    icon: "🚗",
-    gradient: "from-gray-900 to-gray-800",
-    textColor: "text-white",
-    accentColor: "text-gray-300",
-    tagBg: "bg-gray-700",
+    subtitle: "UberX",
+    bg: "bg-neutral-900",
+    text: "text-white",
+    muted: "text-neutral-400",
+    badge: "bg-neutral-700 text-neutral-300",
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" />
+      </svg>
+    ),
   },
   lyft: {
     name: "Lyft",
-    icon: "🚙",
-    gradient: "from-pink-600 to-purple-700",
-    textColor: "text-white",
-    accentColor: "text-pink-200",
-    tagBg: "bg-pink-500/30",
+    subtitle: "Standard",
+    bg: "bg-[#FF00BF]",
+    text: "text-white",
+    muted: "text-white/70",
+    badge: "bg-white/20 text-white",
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3 13h-2v-2h-2v2H9v-2H7v-2h2V9h2v2h2V9h2v2h2v2h-2v2z" />
+      </svg>
+    ),
   },
 };
 
-export default function ResultCard({ estimate, trip }: ResultCardProps) {
+export default function ResultCard({ estimate }: ResultCardProps) {
   const config = serviceConfig[estimate.service];
 
   const formatPrice = (price: number) =>
@@ -37,33 +46,29 @@ export default function ResultCard({ estimate, trip }: ResultCardProps) {
     estimate.surgeMultiplier > 1 || estimate.weatherMultiplier > 1;
 
   return (
-    <div
-      className={`w-full rounded-2xl bg-gradient-to-br ${config.gradient} p-5 
-                    shadow-lg border border-white/10`}
-    >
-      {/* Header */}
+    <div className={`w-full rounded-xl ${config.bg} p-5 transition-transform active:scale-[0.99]`}>
+      {/* Header row */}
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">{config.icon}</span>
-          <h3 className={`text-lg font-bold ${config.textColor}`}>
-            {config.name}
-          </h3>
+        <div className={`flex items-center gap-2.5 ${config.text}`}>
+          <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+            {config.icon}
+          </div>
+          <div>
+            <span className="font-semibold text-[15px]">{config.name}</span>
+            <span className={`ml-1.5 text-xs ${config.muted}`}>{config.subtitle}</span>
+          </div>
         </div>
 
         {hasMultiplier && (
-          <div className="flex gap-1.5">
+          <div className="flex gap-1">
             {estimate.surgeMultiplier > 1 && (
-              <span
-                className={`${config.tagBg} ${config.textColor} text-xs px-2 py-1 rounded-full font-medium`}
-              >
-                ⚡ {estimate.surgeMultiplier}×
+              <span className={`text-[11px] px-2 py-0.5 rounded-full ${config.badge} font-medium`}>
+                {estimate.surgeMultiplier}× surge
               </span>
             )}
             {estimate.weatherMultiplier > 1 && (
-              <span
-                className={`${config.tagBg} ${config.textColor} text-xs px-2 py-1 rounded-full font-medium`}
-              >
-                🌧 +{Math.round((estimate.weatherMultiplier - 1) * 100)}%
+              <span className={`text-[11px] px-2 py-0.5 rounded-full ${config.badge} font-medium`}>
+                +{Math.round((estimate.weatherMultiplier - 1) * 100)}% weather
               </span>
             )}
           </div>
@@ -71,26 +76,16 @@ export default function ResultCard({ estimate, trip }: ResultCardProps) {
       </div>
 
       {/* Price */}
-      <div className="mb-4">
-        <p className={`text-3xl font-extrabold ${config.textColor}`}>
+      <div>
+        <p className={`text-2xl font-bold ${config.text} tracking-tight`}>
           {formatPrice(estimate.low)}
-          <span className={`text-xl font-normal ${config.accentColor}`}>
-            {" "}
+          <span className={`text-lg font-normal ${config.muted} ml-1`}>
             – {formatPrice(estimate.high)}
           </span>
         </p>
-        <p className={`text-xs ${config.accentColor} mt-1`}>
-          Estimated fare range
+        <p className={`text-[11px] ${config.muted} mt-1 uppercase tracking-wider`}>
+          Estimated fare
         </p>
-      </div>
-
-      {/* Trip details */}
-      <div
-        className={`flex items-center gap-4 text-sm ${config.accentColor} pt-3 border-t border-white/10`}
-      >
-        <span>📏 {trip.distanceMiles.toFixed(1)} mi</span>
-        <span>⏱ {Math.round(trip.durationMinutes)} min</span>
-        <span className="capitalize">☁️ {trip.weatherCondition}</span>
       </div>
     </div>
   );
