@@ -39,7 +39,6 @@ const DRIVERS = [
 
 import { Suspense, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 import LegalFooter from "@/components/LegalFooter";
 
 function DriversContent() {
